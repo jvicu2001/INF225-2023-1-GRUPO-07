@@ -4,6 +4,8 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse, HTMLResponse
 from bson import ObjectId
 
+import pymongo
+
 from typing import List
 
 from models import GeoTiffMetadataModel, PyObjectId
@@ -25,8 +27,12 @@ async def add_metadata(metadata: GeoTiffMetadataModel = Body(...)):
 
 @app.get("/", response_description="Get list of metadata from GeoTiff files", response_model=List[GeoTiffMetadataModel])
 async def get_metadata(page: int = 0, limit: int = 25):
-    metadata = await db["GeoTiffMetadata"].find().skip(page).limit(limit).to_list(limit)
-    return metadata
+    metadata = await db["GeoTiffMetadata"].find()\
+        .sort("_id", pymongo.ASCENDING)\
+        .skip((( page - 1 ) * limit) if (page > 0) else 0)\
+        .limit(limit)\
+        .to_list(limit)
+    return JSONResponse(status_code=status.HTTP_200_OK, content=metadata)
 
 @app.get("/{id}", response_description="Get metadata from GeoTiff file", response_model=GeoTiffMetadataModel)
 async def get_metadata_by_id(id: str):
