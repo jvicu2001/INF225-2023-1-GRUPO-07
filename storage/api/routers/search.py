@@ -22,7 +22,7 @@ async def search(query=None, page=1, limit=10):
     if query is None:
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=jsonable_encoder({"error": "No query provided"}))
 
-    files = await db["Files"].find(query)\
+    files = await db["Files"].find({"filename": {"$regex": query}})\
         .skip((( page - 1 ) * limit) if (page > 0) else 0)\
         .limit(limit)\
         .to_list(limit)
