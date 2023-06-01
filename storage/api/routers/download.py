@@ -3,6 +3,8 @@ from fastapi.responses import JSONResponse, FileResponse
 
 import motor.motor_asyncio
 
+from bson import ObjectId
+
 import os
 
 client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_FILEAPI_URL"])
@@ -21,7 +23,7 @@ async def download_file(id: str):
 
     # Buscamos el archivo en la base de datos
     db = client.Files
-    file = await db["Files"].find_one({"_id": id})
+    file = await db["Files"].find_one({"_id": ObjectId(id)})
 
     # Verificamos que el archivo exista
     if file is None:
