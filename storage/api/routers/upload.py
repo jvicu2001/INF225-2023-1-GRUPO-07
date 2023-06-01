@@ -11,6 +11,8 @@ import motor.motor_asyncio
 import os
 import uuid
 
+from hashlib import md5
+
 from fastapi.encoders import jsonable_encoder
 
 client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_FILEAPI_URL"])
@@ -35,13 +37,30 @@ async def upload_file(file: UploadFile = File(...)):
             while content := await file.read(1024):
                 await f.write(content)
 
-        # Registramos el archivo en la base de datos
-        db = client.Files
+        # Calculamos el hash md5 del archivo
+        hashstring: str = ""
+        async with aiofiles.open(file_path, 'rb') as f:
+            hash = md5()
+            while content := await f.read(1024):
+                hash.update(content)
+            hashstring = hash.hexdigest()
 
+        # Verificamos que el archivo no exista en la base de datos
+        db = client.Files
+        if await db["Files"].find_one({"hash": hashstring}) is not None:
+            
+            # Eliminamos el archivo (este ya se encuentra en otra carpeta)
+            os.remove(file_path)
+
+            # Retornamos error de conflicto (código 409)
+            return JSONResponse(content={'error': 'El archivo ya existe'}, status_code=status.HTTP_409_CONFLICT)
+
+        # Registramos el archivo en la base de datos
         new_file = await db["Files"].insert_one({
             "filename": file.filename,
             "folder": folder,
-            "path": file_path
+            "path": file_path,
+            "hash": hashstring
         })
 
         # Abrimos el archivo con rasterio
