@@ -31,7 +31,7 @@ class GeoTiffMetadataModel(BaseModel):
     width: int = Field(...)     # Cantidad de columnas de la imagen en pixeles
     shape: List[int] = Field(...)   # ???
     res: List[float] = Field(...)   # Área de cada pixel (resolución)
-    nodata: int = Field(...)
+    nodata: float = Field(...)
     tags: dict = Field(...)     # Tags
 
     fileId: PyObjectId = Field(...)     # Id del archivo en la colección Files del microservicio storage

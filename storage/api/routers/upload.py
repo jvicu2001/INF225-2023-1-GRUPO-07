@@ -77,7 +77,7 @@ async def upload_file(file: UploadFile):
             metadata['width'] = dataset.width
             metadata['shape'] = dataset.shape
             metadata['res'] = dataset.res
-            metadata['nodata'] = dataset.nodata
+            metadata['nodata'] = (dataset.nodata if dataset.nodata is not None else 0.0)
             metadata['tags'] = dataset.tags()
 
             metadata['fileId'] = new_file.inserted_id.__str__()            
