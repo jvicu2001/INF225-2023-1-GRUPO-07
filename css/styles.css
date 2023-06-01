@@ -3,7 +3,7 @@
 *,
 ::after,
 ::before {
-    margin: 0;
+
     box-sizing: border-box;
 }
 
@@ -102,6 +102,98 @@ body{
     padding:0;
 
 }
+.form-login h5 {
+    margin: 0;
+    text-align: center;
+    height: 40px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid;
+    font-size: 20px;
+  }
+  
+  .controls {
+    width: 100%;
+    border: 1px solid #017bab;
+    margin-bottom: 15px;
+    padding: 11px 10px;
+    background: #252323;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .buttons {
+    width: 100%;
+    height: 40px;
+    background: #017bab;
+    border: none;
+    color: white;
+    margin-bottom: 16px;
+  }
+  
+  .form-login p{
+    height: 40px;
+    text-align: center;
+    border-bottom: 1px solid;
+  }
+  
+  .form-login a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .form-login a:hover {
+    text-decoration: underline;
+  }
+  
+  .container{
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 0;
+    overflow: hidden;
+  
+  }
+  
+  .nav{
+    display: flex;
+    align-items: center;
+    padding:0;
+  }
+  
+  .nav__logo{
+    width: 100px;
+  }
+  
+  .nav__img{
+    width: 100%;
+    display: block;
+  }
+  
+  .nav__link{
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+    margin-left: .8em;
+  }
+  
+  .nav__link:first-of-type{
+    margin-left: auto;
+  }
+.form-login {
+    display: grid;
+    position: relative;
+    width: 400px;
+    height: 340px;
+    background: #4e4d4d;
+    margin: auto;
+    margin-top: 10%;
+    box-shadow: 7px 13px 37px #000;
+    padding: 20px 30px;
+    border-top: 4px solid #017bab;
+    color: white;
+  }
+  
 
 .hero__img{
     width: 100%;
