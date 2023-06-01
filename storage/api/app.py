@@ -9,7 +9,7 @@ import uuid
 
 from fastapi import Body, FastAPI, status, UploadFile, File
 from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
 
 app = FastAPI()
 
@@ -58,3 +58,19 @@ async def upload_file(file: UploadFile = File(...)):
     # Si el archivo no es de tipo GeoTiff
     else:
         return JSONResponse(content={'error': 'El archivo no es de tipo GeoTiff'}, status_code=400)
+
+@app.get("/download/{id}") # id obtenido desde el microservicio de metadatos
+async def download_file(id: str):
+    # Obtenemos la ruta del archivo desde el microservicio de metadatos
+    # (NOTA): Se podría ahorrar esta petición si es que se entregara la ruta direcamente desde el microservicio de almacenamiento al iniciar este endpoint
+    async with aiohttp.ClientSession() as session:
+        async with session.get(f'http://localhost:8001/{id}') as response:
+            metadata = await response.json()
+            file_path = metadata['path']
+
+    # Verificamos que el archivo exista
+    if not os.path.isfile(file_path):
+        return JSONResponse(content={'error': 'El archivo no existe'}, status_code=404)
+
+    # Enviamos el archivo al cliente
+    return FileResponse(file_path, media_type='image/tiff')
