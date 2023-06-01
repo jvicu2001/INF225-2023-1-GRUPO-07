@@ -21,7 +21,7 @@
 - Volvemos a la carpeta raiz del proyecto
 
 - Ejecutamos el servicio
-> uvicorn metadata.api.app:app --restart --port 8001
+> uvicorn metadata.api.app:app --restart --port 8001 --host 0.0.0.0
 
 ---
 ## Servicio Almacenamiento
@@ -42,4 +42,4 @@
 - Volvemos a la carpeta raiz del proyecto
 
 - Ejecutamos el servicio
-> uvicorn storage.api.main:app --restart --port 8000
+> uvicorn storage.api.main:app --restart --port 8000 --host 0.0.0.0
