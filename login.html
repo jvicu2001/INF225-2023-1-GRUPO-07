@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+      function validarFormulario() {
+        var usuario = document.getElementById('usuario').value;
+        var contraseña = document.getElementById('contraseña').value;
+  
+        if (usuario.trim() == '' || contraseña.trim() == '') {
+          alert('Por favor, complete todos los campos');
+          return false;
+        }
+        
+        
+        return true;
+      }
+    </script>
+  </head>
+  <bodyy >
+    <section class="form-login">
+      <h5>Login</h5>
+      <input class="controls" type="text" name="usuario" value="" placeholder="Usuario">
+      <input class="controls" type="password" name="contrasena" value="" placeholder="Contraseña">
+      <input class="buttons" type="submit" name="" value="Ingresar">
+      <p><a href="#">¿Olvidastes tu Contraseña?</a></p>
+
+    </section>
+
+  </body>
+</html>
