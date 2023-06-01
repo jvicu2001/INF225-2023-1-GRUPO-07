@@ -80,7 +80,7 @@ async def upload_file(file: UploadFile):
             metadata['nodata'] = dataset.nodata
             metadata['tags'] = dataset.tags()
 
-            metadata['fileId'] = new_file.inserted_id             
+            metadata['fileId'] = new_file.inserted_id.__str__()            
 
             # Convertimos los metadatos a JSON
             metadata = jsonable_encoder(metadata)
