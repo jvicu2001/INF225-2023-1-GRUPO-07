@@ -18,9 +18,10 @@
 
     > .venv/Scripts/activate.bat
 
+- Volvemos a la carpeta raiz del proyecto
 
 - Ejecutamos el servicio
-> uvicorn app:app --restart --port 8001
+> uvicorn metadata.api.app:app --restart --port 8001
 
 ---
 ## Servicio Almacenamiento
@@ -37,3 +38,8 @@
     > python -m venv .venv
 
     > .venv/Scripts/activate.bat
+
+- Volvemos a la carpeta raiz del proyecto
+
+- Ejecutamos el servicio
+> uvicorn storage.api.main:app --restart --port 8000
