@@ -5,6 +5,7 @@ from fastapi.encoders import jsonable_encoder
 from motor import motor_asyncio
 
 from bson import json_util
+import json
 
 import os
 
@@ -32,6 +33,6 @@ async def search(query=None, page=1, limit=10):
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=jsonable_encoder({"error": "No files found"}))
     
     # Crear una lista de las entradas de la base de datos
-    files_data = [json_util.dumps(file) for file in files]
+    files_data = [json.loads(json_util.dumps(file)) for file in files]
 
     return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(files_data))
