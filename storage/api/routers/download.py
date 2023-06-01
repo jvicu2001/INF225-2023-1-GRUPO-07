@@ -33,4 +33,4 @@ async def download_file(id: str):
         return JSONResponse(content={'error': 'El archivo está registrado pero no existe. Contactar administrador'}, status_code=status.HTTP_404_NOT_FOUND)
 
     # Enviamos el archivo al cliente
-    return FileResponse(file['path'], media_type='image/tiff', status_code=status.HTTP_200_OK)
+    return FileResponse(file['path'], media_type='image/tiff', filename=file['filename'], status_code=status.HTTP_200_OK)
