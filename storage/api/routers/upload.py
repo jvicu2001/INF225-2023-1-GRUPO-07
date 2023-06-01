@@ -24,7 +24,7 @@ router = APIRouter(
 )
 
 @router.post("/")
-async def upload_file(file: UploadFile = File(...)):
+async def upload_file(file: UploadFile):
     if file.content_type == 'image/tiff':
         # Creamos una carpeta con nombre único
         folder = str(uuid.uuid4())
