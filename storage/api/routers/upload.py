@@ -1,19 +1,27 @@
-import os
-
-import rasterio
+from fastapi import APIRouter, File, UploadFile, status
+from fastapi.responses import JSONResponse
 
 import aiofiles
 import aiohttp
 
+import rasterio
+
+import motor.motor_asyncio
+
+import os
 import uuid
 
-from fastapi import Body, FastAPI, status, UploadFile, File
 from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
 
-app = FastAPI()
+client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_FILEAPI_URL"])
 
-@app.post("/upload")
+router = APIRouter(
+    prefix="/upload",
+    tags=["upload"],
+    responses={404: {"description": "Not found"}},
+)
+
+@router.post("/")
 async def upload_file(file: UploadFile = File(...)):
     if file.content_type == 'image/tiff':
         # Creamos una carpeta con nombre único
@@ -26,6 +34,15 @@ async def upload_file(file: UploadFile = File(...)):
         async with aiofiles.open(file_path, 'wb') as f:
             while content := await file.read(1024):
                 await f.write(content)
+
+        # Registramos el archivo en la base de datos
+        db = client.Files
+
+        new_file = await db["Files"].insert_one({
+            "filename": file.filename,
+            "folder": folder,
+            "path": file_path
+        })
 
         # Abrimos el archivo con rasterio
         with rasterio.open(file_path) as dataset:
@@ -43,9 +60,8 @@ async def upload_file(file: UploadFile = File(...)):
             metadata['res'] = dataset.res
             metadata['nodata'] = dataset.nodata
             metadata['tags'] = dataset.tags()
-            
-            metadata['path'] = file_path
-             
+
+            metadata['fileId'] = new_file.inserted_id             
 
             # Convertimos los metadatos a JSON
             metadata = jsonable_encoder(metadata)
@@ -53,24 +69,8 @@ async def upload_file(file: UploadFile = File(...)):
             # Enviamos estos datos al microservicio de metadatos
             async with aiohttp.ClientSession() as session:
                 async with session.post('http://localhost:8001/', json=metadata) as response:
-                    return JSONResponse(content=await response.json(), status_code=200)
+                    return JSONResponse(content=await response.json(), status_code=status.HTTP_201_CREATED)
 
     # Si el archivo no es de tipo GeoTiff
     else:
-        return JSONResponse(content={'error': 'El archivo no es de tipo GeoTiff'}, status_code=400)
-
-@app.get("/download/{id}") # id obtenido desde el microservicio de metadatos
-async def download_file(id: str):
-    # Obtenemos la ruta del archivo desde el microservicio de metadatos
-    # (NOTA): Se podría ahorrar esta petición si es que se entregara la ruta direcamente desde el microservicio de almacenamiento al iniciar este endpoint
-    async with aiohttp.ClientSession() as session:
-        async with session.get(f'http://localhost:8001/{id}') as response:
-            metadata = await response.json()
-            file_path = metadata['path']
-
-    # Verificamos que el archivo exista
-    if not os.path.isfile(file_path):
-        return JSONResponse(content={'error': 'El archivo no existe'}, status_code=404)
-
-    # Enviamos el archivo al cliente
-    return FileResponse(file_path, media_type='image/tiff')
+        return JSONResponse(content={'error': 'El archivo no es de tipo GeoTiff'}, status_code=status.HTTP_400_BAD_REQUEST)
