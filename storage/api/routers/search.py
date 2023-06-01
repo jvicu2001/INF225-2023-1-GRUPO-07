@@ -16,7 +16,7 @@ router = APIRouter(
 
 @router.get("/")
 async def search(query=None, page=1, limit=10):
-    client = motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_FILES_URL"])
+    client = motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_FILEAPI_URL"])
     db = client.Files
 
     if query is None:
