@@ -24,8 +24,11 @@ async def download_file(id: str):
     file = await db["Files"].find_one({"_id": id})
 
     # Verificamos que el archivo exista
-    if not os.path.isfile(file['path']):
+    if file is None:
         return JSONResponse(content={'error': 'El archivo no existe'}, status_code=status.HTTP_404_NOT_FOUND)
+
+    if not os.path.isfile(file['path']):
+        return JSONResponse(content={'error': 'El archivo está registrado pero no existe. Contactar administrador'}, status_code=status.HTTP_404_NOT_FOUND)
 
     # Enviamos el archivo al cliente
     return FileResponse(file['path'], media_type='image/tiff', status_code=status.HTTP_200_OK)
