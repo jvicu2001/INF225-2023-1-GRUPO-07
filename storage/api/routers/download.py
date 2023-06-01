@@ -20,7 +20,7 @@ async def download_file(id: str):
     # Obtenemos la ruta del archivo desde el microservicio de metadatos
     # (NOTA): Se podría ahorrar esta petición si es que se entregara la ruta direcamente desde el microservicio de almacenamiento al iniciar este endpoint
     async with aiohttp.ClientSession() as session:
-        async with session.get(f'http://localhost:8001/{id}') as response:
+        async with session.get(f'http://localhost:8001/metadata/{id}') as response:
             # Revisar si la respuesta es válida
             if response.status != status.HTTP_200_OK:
                 return JSONResponse(content={'error': 'Invalid id'}, status_code=status.HTTP_400_BAD_REQUEST)
