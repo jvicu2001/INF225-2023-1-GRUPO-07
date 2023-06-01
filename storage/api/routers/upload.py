@@ -51,6 +51,7 @@ async def upload_file(file: UploadFile):
             
             # Eliminamos el archivo (este ya se encuentra en otra carpeta)
             os.remove(file_path)
+            os.rmdir(f'.files/{folder}')
 
             # Retornamos error de conflicto (código 409)
             return JSONResponse(content={'error': 'El archivo ya existe'}, status_code=status.HTTP_409_CONFLICT)
