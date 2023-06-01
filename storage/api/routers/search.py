@@ -31,4 +31,7 @@ async def search(query=None, page=1, limit=10):
     if len(files) == 0:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=jsonable_encoder({"error": "No files found"}))
     
-    return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(files))
+    # Crear una lista de las entradas de la base de datos
+    files_data = [jsonable_encoder(file) for file in files]
+
+    return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(files_data))
