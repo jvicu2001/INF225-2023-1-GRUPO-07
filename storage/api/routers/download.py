@@ -1,9 +1,11 @@
 from fastapi import APIRouter, File, UploadFile, status
 from fastapi.responses import JSONResponse, FileResponse
 
-import aiohttp
+import motor.motor_asyncio
 
 import os
+
+client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_FILEAPI_URL"])
 
 router = APIRouter(
     prefix="/download",
@@ -17,20 +19,13 @@ async def download_file(id: str):
     if id is None:
         return JSONResponse(content={'error': 'No id provided'}, status_code=status.HTTP_400_BAD_REQUEST)
 
-    # Obtenemos la ruta del archivo desde el microservicio de metadatos
-    # (NOTA): Se podría ahorrar esta petición si es que se entregara la ruta direcamente desde el microservicio de almacenamiento al iniciar este endpoint
-    async with aiohttp.ClientSession() as session:
-        async with session.get(f'http://localhost:8001/metadata/{id}') as response:
-            # Revisar si la respuesta es válida
-            if response.status != status.HTTP_200_OK:
-                return JSONResponse(content={'error': 'Invalid id'}, status_code=status.HTTP_400_BAD_REQUEST)
-
-            metadata = await response.json()
-            file_path = metadata['path']
+    # Buscamos el archivo en la base de datos
+    db = client.Files
+    file = await db["Files"].find_one({"_id": id})
 
     # Verificamos que el archivo exista
-    if not os.path.isfile(file_path):
+    if not os.path.isfile(file['path']):
         return JSONResponse(content={'error': 'El archivo no existe'}, status_code=status.HTTP_404_NOT_FOUND)
 
     # Enviamos el archivo al cliente
-    return FileResponse(file_path, media_type='image/tiff', status_code=status.HTTP_200_OK)
+    return FileResponse(file['path'], media_type='image/tiff', status_code=status.HTTP_200_OK)
