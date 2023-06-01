@@ -32,7 +32,7 @@ async def get_metadata(page: int = 0, limit: int = 25):
         .to_list(limit)
     return JSONResponse(status_code=status.HTTP_200_OK, content=metadata)
 
-@app.get("/metadata/{id}", response_description="Get metadata from GeoTiff file", response_model=GeoTiffMetadataModel)
+@app.get("/metadata/{id}/", response_description="Get metadata from GeoTiff file", response_model=GeoTiffMetadataModel)
 async def get_metadata_by_id(id: str):
     if (metadata := await db["GeoTiffMetadata"].find_one({"_id": id})) is not None:
         return metadata
