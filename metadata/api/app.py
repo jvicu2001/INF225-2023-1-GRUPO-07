@@ -16,14 +16,14 @@ app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
 db = client.Metadata
 
-@app.post("/metadata", response_model=GeoTiffMetadataModel, response_model_exclude_unset=True, response_description="Add metadata from GeoTiff file")
+@app.post("/metadata/", response_model=GeoTiffMetadataModel, response_model_exclude_unset=True, response_description="Add metadata from GeoTiff file")
 async def add_metadata(metadata: GeoTiffMetadataModel = Body(...)):
     metadata = jsonable_encoder(metadata)
     new_metadata = await db["GeoTiffMetadata"].insert_one(metadata)
     created_metadata = await db["GeoTiffMetadata"].find_one({"_id": new_metadata.inserted_id})
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_metadata)
 
-@app.get("/metadata", response_description="Get list of metadata from GeoTiff files", response_model=List[GeoTiffMetadataModel])
+@app.get("/metadata/", response_description="Get list of metadata from GeoTiff files", response_model=List[GeoTiffMetadataModel])
 async def get_metadata(page: int = 0, limit: int = 25):
     metadata = await db["GeoTiffMetadata"].find()\
         .sort("_id", pymongo.ASCENDING)\
