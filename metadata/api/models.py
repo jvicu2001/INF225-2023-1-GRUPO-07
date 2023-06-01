@@ -34,7 +34,7 @@ class GeoTiffMetadataModel(BaseModel):
     nodata: int = Field(...)
     tags: dict = Field(...)     # Tags
 
-    path: str = Field(...)      # Ruta del archivo en el servidor
+    fileId: PyObjectId = Field(...)     # Id del archivo en la colección Files del microservicio storage
     
     class Config:
         arbitrary_types_allowed = True
