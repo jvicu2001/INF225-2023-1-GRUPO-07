@@ -193,6 +193,32 @@ body{
     border-top: 4px solid #017bab;
     color: white;
   }
+  .form-login2 {
+
+    position: relative;
+    width: 400px;
+
+    background: #4e4d4d;
+    margin: auto;
+    margin-top: 10%;
+    box-shadow: 7px 13px 37px #000;
+    padding: 20px 30px;
+    border-top: 4px solid #017bab;
+    color: white;
+  }
+  
+  .form-login3 {
+
+    position: relative;
+    width: 400px;
+    background: #4e4d4d;
+    margin: auto;
+    margin-top: 10%;
+    box-shadow: 7px 13px 37px #000;
+    padding: 20px 30px;
+    border-top: 4px solid #017bab;
+    color: white;
+  }
   
 
 .hero__img{
