@@ -1,3 +1,8 @@
+# Esqueletos vistas
+
+Se pueden previsualizar las vistas en [esta carpeta](Front-end/vistas/). Aún no hay un servicio de frontend haciendo uso de esta vistas.
+
+----
 # Cómo inicializar servicios de Hito 4
 
 ## Servicio Metadatos
