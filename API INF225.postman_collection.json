@@ -1,0 +1,1003 @@
+{
+	"info": {
+		"_postman_id": "90ba8eef-fc6f-42cb-81c2-f311a4286875",
+		"name": "API INF225",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Almacenamiento",
+			"item": [
+				{
+					"name": "Upload",
+					"item": [
+						{
+							"name": "Subida archivo",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"description": "Archivo a subir ",
+											"type": "file",
+											"src": "/D:/Downloads/ilatlon.tif"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://3.92.211.188:8000/upload/?user=admin&passwd=adminpass",
+									"protocol": "http",
+									"host": [
+										"3",
+										"92",
+										"211",
+										"188"
+									],
+									"port": "8000",
+									"path": [
+										"upload",
+										""
+									],
+									"query": [
+										{
+											"key": "user",
+											"value": "admin",
+											"description": "Nombre de usuario autorizado"
+										},
+										{
+											"key": "passwd",
+											"value": "adminpass",
+											"description": "Contraseña de archivo autorizado"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Subida archivo",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "file",
+													"description": "Archivo a subir ",
+													"type": "file",
+													"src": "/D:/Downloads/ilatlon.tif"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://3.92.211.188:8000/upload/?user=admin&passwd=adminpass",
+											"protocol": "http",
+											"host": [
+												"3",
+												"92",
+												"211",
+												"188"
+											],
+											"port": "8000",
+											"path": [
+												"upload",
+												""
+											],
+											"query": [
+												{
+													"key": "user",
+													"value": "admin",
+													"description": "Nombre de usuario autorizado"
+												},
+												{
+													"key": "passwd",
+													"value": "adminpass",
+													"description": "Contraseña de archivo autorizado"
+												}
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Fri, 02 Jun 2023 03:10:32 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "576"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"_id\": \"64795dadf409041a7a5b81cf\",\n    \"count\": 1,\n    \"crs\": \"EPSG:4267\",\n    \"dtype\": \"int16\",\n    \"driver\": \"GTiff\",\n    \"bounds\": [\n        -122.6261000000582,\n        37.453100000000404,\n        -122.07770000005861,\n        38\n    ],\n    \"lnglat\": [\n        -122.35294179379203,\n        37.726440917005306\n    ],\n    \"height\": 1823,\n    \"width\": 1828,\n    \"shape\": [\n        1823,\n        1828\n    ],\n    \"res\": [\n        0.000299999999999778,\n        0.000299999999999778\n    ],\n    \"nodata\": 0,\n    \"tags\": {\n        \"AREA_OR_POINT\": \"Area\",\n        \"TIFFTAG_DATETIME\": \"1996:11:21 15:03:45\",\n        \"TIFFTAG_RESOLUTIONUNIT\": \"2 (pixels/inch)\",\n        \"TIFFTAG_SOFTWARE\": \"VICAR Program VTIFF\",\n        \"TIFFTAG_XRESOLUTION\": \"72\",\n        \"TIFFTAG_YRESOLUTION\": \"72\"\n    },\n    \"fileId\": \"64795dadcdfdf9ac1f8dc29d\"\n}"
+								},
+								{
+									"name": "Subida archivo ya existente",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "file",
+													"description": "Archivo a subir ",
+													"type": "file",
+													"src": "/D:/Downloads/ilatlon.tif"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://3.92.211.188:8000/upload/?user=admin&passwd=adminpass",
+											"protocol": "http",
+											"host": [
+												"3",
+												"92",
+												"211",
+												"188"
+											],
+											"port": "8000",
+											"path": [
+												"upload",
+												""
+											],
+											"query": [
+												{
+													"key": "user",
+													"value": "admin",
+													"description": "Nombre de usuario autorizado"
+												},
+												{
+													"key": "passwd",
+													"value": "adminpass",
+													"description": "Contraseña de archivo autorizado"
+												}
+											]
+										}
+									},
+									"status": "Conflict",
+									"code": 409,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Fri, 02 Jun 2023 03:11:26 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "32"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"error\": \"El archivo ya existe\"\n}"
+								},
+								{
+									"name": "Subida archivo tipo incorrecto",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "file",
+													"description": "Archivo a subir ",
+													"type": "file",
+													"src": "/D:/Downloads/118053405.pdf"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://3.92.211.188:8000/upload/?user=admin&passwd=adminpass",
+											"protocol": "http",
+											"host": [
+												"3",
+												"92",
+												"211",
+												"188"
+											],
+											"port": "8000",
+											"path": [
+												"upload",
+												""
+											],
+											"query": [
+												{
+													"key": "user",
+													"value": "admin",
+													"description": "Nombre de usuario autorizado"
+												},
+												{
+													"key": "passwd",
+													"value": "adminpass",
+													"description": "Contraseña de archivo autorizado"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Fri, 02 Jun 2023 03:12:10 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "44"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"error\": \"El archivo no es de tipo GeoTiff\"\n}"
+								},
+								{
+									"name": "Subida sin archivo",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "file",
+													"description": "Archivo a subir ",
+													"type": "file",
+													"src": [],
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "http://3.92.211.188:8000/upload/?user=admin&passwd=adminpass",
+											"protocol": "http",
+											"host": [
+												"3",
+												"92",
+												"211",
+												"188"
+											],
+											"port": "8000",
+											"path": [
+												"upload",
+												""
+											],
+											"query": [
+												{
+													"key": "user",
+													"value": "admin",
+													"description": "Nombre de usuario autorizado"
+												},
+												{
+													"key": "passwd",
+													"value": "adminpass",
+													"description": "Contraseña de archivo autorizado"
+												}
+											]
+										}
+									},
+									"status": "Unprocessable Entity",
+									"code": 422,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Fri, 02 Jun 2023 03:12:35 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "88"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"detail\": [\n        {\n            \"loc\": [\n                \"body\",\n                \"file\"\n            ],\n            \"msg\": \"field required\",\n            \"type\": \"value_error.missing\"\n        }\n    ]\n}"
+								},
+								{
+									"name": "Subida archivo sin credenciales",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "file",
+													"description": "Archivo a subir ",
+													"type": "file",
+													"src": "/D:/Downloads/ilatlon.tif"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://3.92.211.188:8000/upload/",
+											"protocol": "http",
+											"host": [
+												"3",
+												"92",
+												"211",
+												"188"
+											],
+											"port": "8000",
+											"path": [
+												"upload",
+												""
+											],
+											"query": [
+												{
+													"key": "user",
+													"value": "admin",
+													"description": "Nombre de usuario autorizado",
+													"disabled": true
+												},
+												{
+													"key": "passwd",
+													"value": "adminpass",
+													"description": "Contraseña de archivo autorizado",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"status": "Unprocessable Entity",
+									"code": 422,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Fri, 02 Jun 2023 03:13:24 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "168"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"detail\": [\n        {\n            \"loc\": [\n                \"query\",\n                \"user\"\n            ],\n            \"msg\": \"field required\",\n            \"type\": \"value_error.missing\"\n        },\n        {\n            \"loc\": [\n                \"query\",\n                \"passwd\"\n            ],\n            \"msg\": \"field required\",\n            \"type\": \"value_error.missing\"\n        }\n    ]\n}"
+								},
+								{
+									"name": "Subida archivo credenciales incorrectas",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "file",
+													"description": "Archivo a subir ",
+													"type": "file",
+													"src": "/D:/Downloads/ilatlon.tif"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://3.92.211.188:8000/upload/?user=notadmin&passwd=notadminpass",
+											"protocol": "http",
+											"host": [
+												"3",
+												"92",
+												"211",
+												"188"
+											],
+											"port": "8000",
+											"path": [
+												"upload",
+												""
+											],
+											"query": [
+												{
+													"key": "user",
+													"value": "notadmin",
+													"description": "Nombre de usuario autorizado"
+												},
+												{
+													"key": "passwd",
+													"value": "notadminpass",
+													"description": "Contraseña de archivo autorizado"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Fri, 02 Jun 2023 03:14:10 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "31"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"error\": \"Invalid credentials\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Search",
+					"item": [
+						{
+							"name": "Búsqueda",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://3.92.211.188:8000/search/?query=ntf_nord.tif",
+									"protocol": "http",
+									"host": [
+										"3",
+										"92",
+										"211",
+										"188"
+									],
+									"port": "8000",
+									"path": [
+										"search",
+										""
+									],
+									"query": [
+										{
+											"key": "query",
+											"value": "ntf_nord.tif"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Búsqueda",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://3.92.211.188:8000/search/?query=ntf_nord.tif",
+											"protocol": "http",
+											"host": [
+												"3",
+												"92",
+												"211",
+												"188"
+											],
+											"port": "8000",
+											"path": [
+												"search",
+												""
+											],
+											"query": [
+												{
+													"key": "query",
+													"value": "ntf_nord.tif"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 01 Jun 2023 07:59:33 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "227"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"_id\": {\n            \"$oid\": \"64784afc28600515002e8a61\"\n        },\n        \"filename\": \"ntf_nord.tif\",\n        \"folder\": \"a83c7721-7b58-43d5-8a58-37511276543e\",\n        \"path\": \".files/a83c7721-7b58-43d5-8a58-37511276543e/ntf_nord.tif\",\n        \"hash\": \"f60c2d73c6cd2d9b0b6bfc1c6bd4d569\"\n    }\n]"
+								},
+								{
+									"name": "Búsqueda vacía",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://3.92.211.188:8000/search/",
+											"protocol": "http",
+											"host": [
+												"3",
+												"92",
+												"211",
+												"188"
+											],
+											"port": "8000",
+											"path": [
+												"search",
+												""
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 01 Jun 2023 07:47:05 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "29"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"error\": \"No query provided\"\n}"
+								},
+								{
+									"name": "Búsqueda sin elementos existentes",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://3.92.211.188:8000/search/?query=nofile.tif",
+											"protocol": "http",
+											"host": [
+												"3",
+												"92",
+												"211",
+												"188"
+											],
+											"port": "8000",
+											"path": [
+												"search",
+												""
+											],
+											"query": [
+												{
+													"key": "query",
+													"value": "nofile.tif"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 01 Jun 2023 08:00:46 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "26"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"error\": \"No files found\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Download",
+					"item": [
+						{
+							"name": "Descargar",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://3.92.211.188:8000/download/?id=64784afc28600515002e8a61",
+									"protocol": "http",
+									"host": [
+										"3",
+										"92",
+										"211",
+										"188"
+									],
+									"port": "8000",
+									"path": [
+										"download",
+										""
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "64784afc28600515002e8a61"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Root test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://3.92.211.188:8000/",
+							"protocol": "http",
+							"host": [
+								"3",
+								"92",
+								"211",
+								"188"
+							],
+							"port": "8000",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Root test",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://3.92.211.188:8000/",
+									"protocol": "http",
+									"host": [
+										"3",
+										"92",
+										"211",
+										"188"
+									],
+									"port": "8000",
+									"path": [
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Thu, 01 Jun 2023 06:27:05 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "25"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Hello World\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Metadata",
+			"item": [
+				{
+					"name": "Búsqueda metadata",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": [
+						{
+							"name": "Búsqueda metadata",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://3.92.211.188:8001/metadata/?page=1&limit=10",
+									"protocol": "http",
+									"host": [
+										"3",
+										"92",
+										"211",
+										"188"
+									],
+									"port": "8001",
+									"path": [
+										"metadata",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Thu, 01 Jun 2023 08:42:31 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "798"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"64784afc871f5e568da513a6\",\n        \"count\": 1,\n        \"crs\": \"EPSG:27561\",\n        \"dtype\": \"uint8\",\n        \"driver\": \"GTiff\",\n        \"bounds\": [\n            440720,\n            69280,\n            471440,\n            100000\n        ],\n        \"lnglat\": [\n            0.39100854918574235,\n            48.44581980489069\n        ],\n        \"height\": 512,\n        \"width\": 512,\n        \"shape\": [\n            512,\n            512\n        ],\n        \"res\": [\n            60,\n            60\n        ],\n        \"nodata\": 0,\n        \"tags\": {\n            \"AREA_OR_POINT\": \"Area\"\n        },\n        \"fileId\": \"64784afc28600515002e8a61\"\n    },\n    {\n        \"_id\": \"6478597a871f5e568da513a7\",\n        \"count\": 1,\n        \"crs\": \"EPSG:32617\",\n        \"dtype\": \"uint8\",\n        \"driver\": \"GTiff\",\n        \"bounds\": [\n            576496.823428,\n            4518391.382678,\n            759427.63063,\n            4660453.588271\n        ],\n        \"lnglat\": [\n            -78.98952215808274,\n            41.438816989931865\n        ],\n        \"height\": 5593,\n        \"width\": 7202,\n        \"shape\": [\n            5593,\n            7202\n        ],\n        \"res\": [\n            25.400001,\n            25.400001\n        ],\n        \"nodata\": 0,\n        \"tags\": {\n            \"AREA_OR_POINT\": \"Area\",\n            \"TIFFTAG_RESOLUTIONUNIT\": \"2 (pixels/inch)\",\n            \"TIFFTAG_XRESOLUTION\": \"72\",\n            \"TIFFTAG_YRESOLUTION\": \"72\"\n        },\n        \"fileId\": \"6478597ae409fe61d2eb9077\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Búsqueda metadata de id específico",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://3.92.211.188:8001/metadata/64784afc871f5e568da513a6",
+							"protocol": "http",
+							"host": [
+								"3",
+								"92",
+								"211",
+								"188"
+							],
+							"port": "8001",
+							"path": [
+								"metadata",
+								"64784afc871f5e568da513a6"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Búsqueda metadata de id específico",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://3.92.211.188:8001/metadata/64784afc871f5e568da513a6/",
+									"protocol": "http",
+									"host": [
+										"3",
+										"92",
+										"211",
+										"188"
+									],
+									"port": "8001",
+									"path": [
+										"metadata",
+										"64784afc871f5e568da513a6",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Thu, 01 Jun 2023 08:44:24 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "333"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"64784afc871f5e568da513a6\",\n    \"count\": 1,\n    \"crs\": \"EPSG:27561\",\n    \"dtype\": \"uint8\",\n    \"driver\": \"GTiff\",\n    \"bounds\": [\n        440720,\n        69280,\n        471440,\n        100000\n    ],\n    \"lnglat\": [\n        0.39100854918574235,\n        48.44581980489069\n    ],\n    \"height\": 512,\n    \"width\": 512,\n    \"shape\": [\n        512,\n        512\n    ],\n    \"res\": [\n        60,\n        60\n    ],\n    \"nodata\": 0,\n    \"tags\": {\n        \"AREA_OR_POINT\": \"Area\"\n    },\n    \"fileId\": \"64784afc28600515002e8a61\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Subida de metadata",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "count",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "crs",
+									"value": "EPSG:27561",
+									"type": "text"
+								},
+								{
+									"key": "dtype",
+									"value": "uint8",
+									"type": "text"
+								},
+								{
+									"key": "driver",
+									"value": "GTiff",
+									"type": "text"
+								},
+								{
+									"key": "bounds",
+									"value": "440720,69280,471440,100000",
+									"type": "text"
+								},
+								{
+									"key": "lnglat",
+									"value": "0.39100854918574235,48.44581980489069",
+									"type": "text"
+								},
+								{
+									"key": "height",
+									"value": "512",
+									"type": "text"
+								},
+								{
+									"key": "width",
+									"value": "512",
+									"type": "text"
+								},
+								{
+									"key": "shape",
+									"value": "512,512",
+									"type": "text"
+								},
+								{
+									"key": "res",
+									"value": "60,60",
+									"type": "text"
+								},
+								{
+									"key": "nodata",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "[object Object]",
+									"type": "text"
+								},
+								{
+									"key": "fileId",
+									"value": "64784afc28600515002e8a61",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://3.92.211.188:8001/metadata/?user=admin&passwd=adminpass",
+							"protocol": "http",
+							"host": [
+								"3",
+								"92",
+								"211",
+								"188"
+							],
+							"port": "8001",
+							"path": [
+								"metadata",
+								""
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "admin"
+								},
+								{
+									"key": "passwd",
+									"value": "adminpass"
+								}
+							]
+						},
+						"description": "**Nota**: Este endpoint está pensado para solo ser usado por el microservicio de almacenamiento, ya que envía la metadata de los archivos recién subidos para que sean documentados."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
