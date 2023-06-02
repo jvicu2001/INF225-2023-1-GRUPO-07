@@ -93,7 +93,7 @@ async def upload_file(file: UploadFile, user: str, passwd: str):
 
             # Enviamos estos datos al microservicio de metadatos
             async with aiohttp.ClientSession() as session:
-                async with session.post('http://localhost:8001/metadata/', json=metadata, user=user, passwd=passwd) as response:
+                async with session.post('http://localhost:8001/metadata/', json=metadata, params={"user":user, "passwd":passwd}) as response:
                     return JSONResponse(content=await response.json(), status_code=status.HTTP_201_CREATED)
 
     # Si el archivo no es de tipo GeoTiff
