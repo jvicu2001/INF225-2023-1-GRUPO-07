@@ -18,10 +18,12 @@
 
     > .venv/Scripts/activate.bat
 
+
 - Volvemos a la carpeta raiz del proyecto
 
 - Ejecutamos el servicio
 > uvicorn metadata.api.app:app --restart --port 8001 --host 0.0.0.0
+
 
 ---
 ## Servicio Almacenamiento
