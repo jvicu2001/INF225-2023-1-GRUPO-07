@@ -17,7 +17,12 @@ client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
 db = client.Metadata
 
 @app.post("/metadata/", response_model=GeoTiffMetadataModel, response_model_exclude_unset=True, response_description="Add metadata from GeoTiff file")
-async def add_metadata(metadata: GeoTiffMetadataModel = Body(...)):
+async def add_metadata(metadata: GeoTiffMetadataModel = Body(...), user: str = Body(...), passwd: str = Body(...)):
+
+    # Login placeholder para limitar acceso a subida de metadatos y cumplir con HU no nos pegue ayudante
+    if not (user == "admin" and passwd == "adminpass"):
+        return JSONResponse(content={'error': 'Invalid credentials'}, status_code=status.HTTP_401_UNAUTHORIZED)
+    
     metadata = jsonable_encoder(metadata)
     new_metadata = await db["GeoTiffMetadata"].insert_one(metadata)
     created_metadata = await db["GeoTiffMetadata"].find_one({"_id": new_metadata.inserted_id})

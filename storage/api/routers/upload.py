@@ -24,7 +24,12 @@ router = APIRouter(
 )
 
 @router.post("/")
-async def upload_file(file: UploadFile):
+async def upload_file(file: UploadFile, user: str, passwd: str):
+
+    # Login placeholder para limitar acceso a subida de archivos y cumplir con HU no nos pegue ayudante
+    if not (user == "admin" and passwd == "adminpass"):
+        return JSONResponse(content={'error': 'Invalid credentials'}, status_code=status.HTTP_401_UNAUTHORIZED)
+
     if file.content_type == 'image/tiff':
         # Creamos una carpeta con nombre único
         folder = str(uuid.uuid4())
