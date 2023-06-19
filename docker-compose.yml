@@ -1,0 +1,56 @@
+services:
+  storage:
+    depends_on:
+      - metadata
+      - mongo
+    build:
+      context: ./storage
+      dockerfile: Dockerfile
+    ports:  
+      - "8020:8020"
+    networks:
+      - backend
+    secrets:
+      - oauth-secret
+    volumes:
+      - files:/data/files
+    environment:
+      MONGODB_URL: mongodb://root:r00tpasswd@mongo:27017
+
+  metadata:
+    depends_on:
+      - mongo    
+    build:
+      context: ./metadata
+      dockerfile: Dockerfile
+    ports:
+      - "8010:8010"
+    networks:
+      - backend
+    secrets:
+      - oauth-secret
+    environment:
+      MONGODB_URL: mongodb://root:r00tpasswd@mongo:27017
+  
+  mongo:
+    image: mongo:6.0.6-jammy
+    networks:
+      - backend
+    volumes: 
+      - db:/data/db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: r00tpasswd
+
+secrets:
+  oauth-secret: 
+    file: ./oauth_secret.key
+
+networks:
+    backend: {}
+
+volumes:
+  db:
+  files:

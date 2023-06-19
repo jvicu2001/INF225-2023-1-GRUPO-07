@@ -15,7 +15,7 @@ from hashlib import md5
 
 from fastapi.encoders import jsonable_encoder
 
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_FILEAPI_URL"])
+client = motor.motor_asyncio.AsyncIOMotorClient(f'{os.environ["MONGODB_URL"]}')
 
 router = APIRouter(
     prefix="/upload",
@@ -33,9 +33,9 @@ async def upload_file(file: UploadFile, user: str, passwd: str):
     if file.content_type == 'image/tiff':
         # Creamos una carpeta con nombre único
         folder = str(uuid.uuid4())
-        os.makedirs(f'.files/{folder}', exist_ok=True)
+        os.makedirs(f'/data/files/{folder}', exist_ok=True)
 
-        file_path = f'.files/{folder}/{file.filename}'
+        file_path = f'/data/files/{folder}/{file.filename}'
 
         # Guardamos el archivo en la carpeta
         async with aiofiles.open(file_path, 'wb') as f:
@@ -56,7 +56,7 @@ async def upload_file(file: UploadFile, user: str, passwd: str):
             
             # Eliminamos el archivo (este ya se encuentra en otra carpeta)
             os.remove(file_path)
-            os.rmdir(f'.files/{folder}')
+            os.rmdir(f'/data/files/{folder}')
 
             # Retornamos error de conflicto (código 409)
             return JSONResponse(content={'error': 'El archivo ya existe'}, status_code=status.HTTP_409_CONFLICT)
@@ -93,7 +93,7 @@ async def upload_file(file: UploadFile, user: str, passwd: str):
 
             # Enviamos estos datos al microservicio de metadatos
             async with aiohttp.ClientSession() as session:
-                async with session.post('http://localhost:8001/metadata/', json=metadata, params={"user":user, "passwd":passwd}) as response:
+                async with session.post('http://metadata:8010/metadata/', json=metadata, params={"user":user, "passwd":passwd}) as response:
                     return JSONResponse(content=await response.json(), status_code=status.HTTP_201_CREATED)
 
     # Si el archivo no es de tipo GeoTiff

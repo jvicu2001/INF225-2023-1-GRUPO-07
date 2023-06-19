@@ -7,7 +7,7 @@ from bson import ObjectId
 
 import os
 
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_FILEAPI_URL"])
+client = motor.motor_asyncio.AsyncIOMotorClient(f'{os.environ["MONGODB_URL"]}')
 
 router = APIRouter(
     prefix="/download",

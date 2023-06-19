@@ -6,14 +6,16 @@ from bson import ObjectId
 
 import pymongo
 
+import uvicorn
+
 from typing import List
 
-from .models import GeoTiffMetadataModel
+from models import GeoTiffMetadataModel
 
 import motor.motor_asyncio
 
 app = FastAPI()
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
+client = motor.motor_asyncio.AsyncIOMotorClient(f'{os.environ["MONGODB_URL"]}')
 db = client.Metadata
 
 @app.post("/metadata/", response_model=GeoTiffMetadataModel, response_model_exclude_unset=True, response_description="Add metadata from GeoTiff file")
@@ -43,3 +45,6 @@ async def get_metadata_by_id(id: str):
         return metadata
 
     raise HTTPException(status_code=404, detail=f"Metadata {id} not found")
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", port=8010, host="0.0.0.0", log_level="info")
