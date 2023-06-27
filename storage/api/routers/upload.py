@@ -1,5 +1,6 @@
-from fastapi import APIRouter, File, UploadFile, status
+from fastapi import APIRouter, File, UploadFile, status, Depends
 from fastapi.responses import JSONResponse
+from fastapi.security import OAuth2PasswordBearer
 
 import aiofiles
 import aiohttp
@@ -24,11 +25,7 @@ router = APIRouter(
 )
 
 @router.post("/")
-async def upload_file(file: UploadFile, user: str, passwd: str):
-
-    # Login placeholder para limitar acceso a subida de archivos y cumplir con HU no nos pegue ayudante
-    if not (user == "admin" and passwd == "adminpass"):
-        return JSONResponse(content={'error': 'Invalid credentials'}, status_code=status.HTTP_401_UNAUTHORIZED)
+async def upload_file(file: UploadFile, token: str = Depends(OAuth2PasswordBearer(tokenUrl="token"))):
 
     if file.content_type == 'image/tiff':
         # Creamos una carpeta con nombre único
