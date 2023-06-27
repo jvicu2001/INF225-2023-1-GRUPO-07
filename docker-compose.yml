@@ -1,5 +1,9 @@
+version: "3.8"
+
 services:
   storage:
+    restart: always
+
     depends_on:
       - metadata
       - mongo
@@ -14,6 +18,7 @@ services:
       - oauth-secret
     volumes:
       - files:/data/files
+      - ./storage/api:/opt/app
     environment:
       MONGODB_URL: mongodb://root:r00tpasswd@mongo:27017
 

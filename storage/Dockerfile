@@ -2,10 +2,14 @@ FROM python:3.11.4-slim-bookworm
 
 WORKDIR /opt/app
 
-COPY . .
+# Copiar requerimientos
+COPY api/requirements.txt .
 
 # Descargar requerimientos
-RUN pip install -r api/requirements.txt
+RUN pip install -r requirements.txt
+
+# Copiar API
+COPY api/ .
 
 # Ejecutar API
-ENTRYPOINT [ "python3" , "api/main.py" ]
+ENTRYPOINT [ "python3" , "main.py" ]
