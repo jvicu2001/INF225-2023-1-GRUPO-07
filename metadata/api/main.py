@@ -5,6 +5,8 @@ from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from bson import ObjectId
 
+from sys import argv
+
 import pymongo
 
 import uvicorn
@@ -48,5 +50,11 @@ async def get_metadata_by_id(id: str):
 
     raise HTTPException(status_code=404, detail=f"Metadata {id} not found")
 
+# Dev environment flag
+isDev: bool = False
+if len(argv) > 1:
+    if (argv[1] == "1"):
+        isDev = True
+
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8010, host="0.0.0.0", log_level="info", reload=True)
+    uvicorn.run("main:app", port=8010, host="0.0.0.0", log_level="info", reload=isDev)
