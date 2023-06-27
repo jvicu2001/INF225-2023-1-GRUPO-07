@@ -34,6 +34,8 @@ services:
       - backend
     secrets:
       - oauth-secret
+    volumes:
+      - ./metadata/api:/opt/app
     environment:
       MONGODB_URL: mongodb://root:r00tpasswd@mongo:27017
   

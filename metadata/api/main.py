@@ -1,7 +1,8 @@
 import os
-from fastapi import Body, FastAPI, status, HTTPException
+from fastapi import Body, FastAPI, status, HTTPException, Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from bson import ObjectId
 
 import pymongo
@@ -14,17 +15,18 @@ from models import GeoTiffMetadataModel
 
 import motor.motor_asyncio
 
+from routes import auth
+
 app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient(f'{os.environ["MONGODB_URL"]}')
 db = client.Metadata
 
-@app.post("/metadata/", response_model=GeoTiffMetadataModel, response_model_exclude_unset=True, response_description="Add metadata from GeoTiff file")
-async def add_metadata(metadata: GeoTiffMetadataModel = Body(...), user: str = "", passwd: str = ""):
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
-    # Login placeholder para limitar acceso a subida de metadatos y cumplir con HU no nos pegue ayudante
-    if not (user == "admin" and passwd == "adminpass"):
-        return JSONResponse(content={'error': 'Invalid credentials'}, status_code=status.HTTP_401_UNAUTHORIZED)
-    
+app.include_router(auth.router)
+
+@app.post("/metadata/", response_model=GeoTiffMetadataModel, response_model_exclude_unset=True, response_description="Add metadata from GeoTiff file")
+async def add_metadata(metadata: GeoTiffMetadataModel = Body(...), token : str = Depends(oauth2_scheme)):    
     metadata = jsonable_encoder(metadata)
     new_metadata = await db["GeoTiffMetadata"].insert_one(metadata)
     created_metadata = await db["GeoTiffMetadata"].find_one({"_id": new_metadata.inserted_id})
@@ -47,4 +49,4 @@ async def get_metadata_by_id(id: str):
     raise HTTPException(status_code=404, detail=f"Metadata {id} not found")
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8010, host="0.0.0.0", log_level="info")
+    uvicorn.run("main:app", port=8010, host="0.0.0.0", log_level="info", reload=True)
