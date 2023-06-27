@@ -25,7 +25,7 @@ router = APIRouter(
 )
 
 @router.post("/")
-async def upload_file(file: UploadFile, token: str = Depends(OAuth2PasswordBearer(tokenUrl="token"))):
+async def upload_file(file: UploadFile, token: str = Depends(OAuth2PasswordBearer(tokenUrl="auth/token"))):
 
     if file.content_type == 'image/tiff':
         # Creamos una carpeta con nombre único
@@ -90,7 +90,12 @@ async def upload_file(file: UploadFile, token: str = Depends(OAuth2PasswordBeare
 
             # Enviamos estos datos al microservicio de metadatos
             async with aiohttp.ClientSession() as session:
-                async with session.post('http://metadata:8010/metadata/', json=metadata, params={"user":user, "passwd":passwd}) as response:
+                async with session.post('http://metadata:8010/metadata/', json=metadata, params={"token":token}) as response:
+                    if response.status != 201:
+                        # Si el microservicio de metadatos retorna un error, eliminamos el archivo y retornamos el error
+                        os.remove(file_path)
+                        os.rmdir(f'/data/files/{folder}')
+                        return JSONResponse(content=await response.json(), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
                     return JSONResponse(content=await response.json(), status_code=status.HTTP_201_CREATED)
 
     # Si el archivo no es de tipo GeoTiff
