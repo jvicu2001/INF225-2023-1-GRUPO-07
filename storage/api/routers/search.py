@@ -16,17 +16,23 @@ router = APIRouter(
 )
 
 @router.get("/")
-async def search(query=None, page=1, limit=10):
-    client = motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_FILEAPI_URL"])
+async def search(query: str | None = None, page: int = 1, limit: int = 10):
+    client = motor_asyncio.AsyncIOMotorClient(f'{os.environ["MONGODB_URL"]}')
     db = client.Files
 
-    if query is None:
-        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=jsonable_encoder({"error": "No query provided"}))
+    files: list = []
 
-    files = await db["Files"].find({"filename": {"$regex": query}})\
-        .skip((( page - 1 ) * limit) if (page > 0) else 0)\
-        .limit(limit)\
-        .to_list(limit)
+    if query is None:
+        files = await db["Files"].find()\
+            .skip((( page - 1 ) * limit) if (page > 0) else 0)\
+            .limit(limit)\
+            .to_list(limit)
+
+    else:
+        files = await db["Files"].find({"filename": {"$regex": query}})\
+            .skip((( page - 1 ) * limit) if (page > 0) else 0)\
+            .limit(limit)\
+            .to_list(limit)
     
     # Devolver código 404 si no se encontraron archivos
     if len(files) == 0:

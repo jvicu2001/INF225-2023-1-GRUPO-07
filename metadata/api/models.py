@@ -71,3 +71,25 @@ class GeoTiffMetadataModel(BaseModel):
             }
         }   # Ejemplo de un documento de la colección GeoTiffMetadata
             # Extraido de https://rasterio.readthedocs.io/en/stable/cli.html#info
+
+# User and auth models
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: str | None = None
+
+
+class User(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    username: str = Field(...)
+    password_hash: str = Field(...)
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+
+class UserInDB(User):
+    password_hash: str = Field(...)

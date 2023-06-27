@@ -1,0 +1,15 @@
+FROM python:3.11.4-slim-bookworm
+
+WORKDIR /opt/app
+
+# Copiar requerimientos
+COPY api/requirements.txt .
+
+# Descargar requerimientos
+RUN pip install -r requirements.txt
+
+# Copiar API
+COPY api/ .
+
+# Ejecutar API
+ENTRYPOINT [ "python3" , "main.py" ]
