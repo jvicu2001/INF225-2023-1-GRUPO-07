@@ -1,0 +1,9 @@
+FROM node:lts-slim
+
+WORKDIR /opt/app
+
+COPY . .
+
+RUN [ "yarn", "install" ]
+
+ENTRYPOINT [ "yarn", "dev", "--debug", "--host" ]
