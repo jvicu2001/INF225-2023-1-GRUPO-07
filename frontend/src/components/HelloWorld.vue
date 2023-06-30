@@ -1,9 +1,24 @@
-<script setup lang="ts">
+<script lang="ts">
 import { ref } from 'vue'
+import { VChip } from 'vuetify/components';
+import { defineComponent } from 'vue';
 
-defineProps<{ msg: string }>()
 
-const count = ref(0)
+// defineProps<{ msg: string }>()
+export default defineComponent( {
+  props: {
+    msg: String
+  },
+  components: {
+    VChip
+  },
+  setup() {
+    const count = ref(0)
+    return {
+      count
+    }
+  }
+})
 </script>
 
 <template>
@@ -16,7 +31,7 @@ const count = ref(0)
       <code>components/HelloWorld.vue</code> to test HMR
     </p>
   </div>
-
+  <v-chip>Count: {{ count }}</v-chip>
   <p>
     Check out
     <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
