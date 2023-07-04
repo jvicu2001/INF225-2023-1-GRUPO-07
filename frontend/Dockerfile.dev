@@ -2,8 +2,6 @@ FROM node:lts-slim
 
 WORKDIR /opt/app
 
-COPY . .
+COPY package*.json ./
 
 RUN [ "npm", "install" ]
-
-ENTRYPOINT [ "npm", "run", "dev" ]

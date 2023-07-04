@@ -55,7 +55,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.dev
     volumes:
-      - ./frontend/src:/opt/app/src
+      - ./frontend/:/opt/app/
       - /opt/app/node_modules # Evita que se copie node_modules
     networks:
       - backend
@@ -63,6 +63,7 @@ services:
     ports:
       - "5173:5173"
       - "8090:8090"
+    command: npm run dev
 
 secrets:
   oauth-secret: 
