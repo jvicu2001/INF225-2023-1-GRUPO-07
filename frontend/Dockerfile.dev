@@ -4,6 +4,6 @@ WORKDIR /opt/app
 
 COPY . .
 
-RUN [ "yarn", "install" ]
+RUN [ "npm", "install" ]
 
-ENTRYPOINT [ "yarn", "dev", "--debug", "--host" ]
+ENTRYPOINT [ "npm", "run", "dev" ]
