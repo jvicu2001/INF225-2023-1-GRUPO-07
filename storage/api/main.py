@@ -1,3 +1,5 @@
+from sys import argv
+
 from fastapi import FastAPI, Depends
 from fastapi.security import OAuth2PasswordBearer
 import uvicorn
@@ -17,5 +19,11 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 async def root(token: str = Depends(oauth2_scheme)):
     return {"message": "Hello World"}
 
+# Dev environment flag
+isDev: bool = False
+if len(argv) > 1:
+    if (argv[1] == "1"):
+        isDev = True
+
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8020, host="0.0.0.0", log_level="info", reload=True)
+    uvicorn.run("main:app", port=8020, host="0.0.0.0", log_level="info", reload=isDev)

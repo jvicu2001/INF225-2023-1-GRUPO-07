@@ -12,11 +12,15 @@ import motor.motor_asyncio
 import os
 import uuid
 
+from jose import jwt
+
 from hashlib import md5
 
 from fastapi.encoders import jsonable_encoder
 
 client = motor.motor_asyncio.AsyncIOMotorClient(f'{os.environ["MONGODB_URL"]}')
+
+SECRET_KEY = open("/run/secrets/oauth-secret", "r").read()
 
 router = APIRouter(
     prefix="/upload",
@@ -25,7 +29,10 @@ router = APIRouter(
 )
 
 @router.post("/")
-async def upload_file(file: UploadFile, token: str = Depends(OAuth2PasswordBearer(tokenUrl="auth/token"))):
+async def upload_file(file: UploadFile, dataType: int, token: str = Depends(OAuth2PasswordBearer(tokenUrl="auth/token"))):
+    # DEM:0, DTM:1, DSM:2
+    if dataType not in [0,1,2]:
+        return JSONResponse(content={'error': 'El tipo de archivo no es válido'}, status_code=status.HTTP_400_BAD_REQUEST)
 
     if file.content_type == 'image/tiff':
         # Creamos una carpeta con nombre único
@@ -66,23 +73,36 @@ async def upload_file(file: UploadFile, token: str = Depends(OAuth2PasswordBeare
             "hash": hashstring
         })
 
+        # Obtenemos el nombre del usuario que subió el archivo mediante el token
+        decoded_token = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        username = decoded_token.get("username")
+
         # Abrimos el archivo con rasterio
         with rasterio.open(file_path) as dataset:
             # Obtenemos los metadatos
             metadata = {}
-            metadata['count'] = dataset.count
-            metadata['crs'] = dataset.crs.to_string()
-            metadata['dtype'] = dataset.dtypes[0]
-            metadata['driver'] = dataset.driver
-            metadata['bounds'] = list(dataset.bounds)
-            metadata['lnglat'] = list(dataset.lnglat())
-            metadata['height'] = dataset.height
-            metadata['width'] = dataset.width
-            metadata['shape'] = dataset.shape
-            metadata['res'] = dataset.res
-            metadata['nodata'] = (dataset.nodata if dataset.nodata is not None else 0.0)
-            metadata['tags'] = dataset.tags()
+            filedata = {}
+            filedata['count'] = dataset.count
+            filedata['crs'] = dataset.crs.to_string()
+            filedata['dtype'] = dataset.dtypes[0]
+            filedata['driver'] = dataset.driver
+            filedata['bounds'] = list(dataset.bounds)
+            filedata['lnglat'] = list(dataset.lnglat())
+            filedata['height'] = dataset.height
+            filedata['width'] = dataset.width
+            filedata['shape'] = dataset.shape
+            filedata['res'] = dataset.res
+            filedata['nodata'] = (dataset.nodata if dataset.nodata is not None else 0.0)
+            filedata['tags'] = dataset.tags()
 
+            metadata['fileData'] = filedata
+
+            metadata['fileDataType'] = dataType
+
+            # Datos del usuario
+            metadata['user'] = username
+
+            metadata['fileName'] = file.filename
             metadata['fileId'] = new_file.inserted_id.__str__()            
 
             # Convertimos los metadatos a JSON

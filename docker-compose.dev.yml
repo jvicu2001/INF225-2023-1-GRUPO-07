@@ -3,13 +3,12 @@ version: "3.8"
 services:
   storage:
     restart: always
-
     depends_on:
       - metadata
       - mongo
     build:
       context: ./storage
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:  
       - "8020:8020"
     networks:
@@ -18,6 +17,7 @@ services:
       - oauth-secret
     volumes:
       - files:/data/files
+      - ./storage/api:/opt/app
     environment:
       MONGODB_URL: mongodb://root:r00tpasswd@mongo:27017
 
@@ -26,13 +26,15 @@ services:
       - mongo    
     build:
       context: ./metadata
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "8010:8010"
     networks:
       - backend
     secrets:
       - oauth-secret
+    volumes:
+      - ./metadata/api:/opt/app
     environment:
       MONGODB_URL: mongodb://root:r00tpasswd@mongo:27017
   
@@ -51,12 +53,17 @@ services:
   frontend:
     build: 
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend/:/opt/app/
+      - /opt/app/node_modules # Evita que se copie node_modules
     networks:
       - backend
       - frontend
     ports:
-      - "8080:80"
+      - "5173:5173"
+      - "8090:8090"
+    command: npm run dev
 
 secrets:
   oauth-secret: 

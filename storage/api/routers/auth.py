@@ -15,7 +15,7 @@ from models import User, Token, TokenData, UserInDB
 
 SECRET_KEY = open("/run/secrets/oauth-secret", "r").read()
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 120
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -38,7 +38,7 @@ async def token(form_data: OAuth2PasswordRequestForm = Depends()):
         return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"error": "Incorrect username or password"})
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        data={"username": user.username}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
