@@ -31,8 +31,6 @@ export async function load({params}) {
     })
 
     const metadata: Metadata[] = await results.json();
-
-    console.log(metadata);
     
     return {
         metadata

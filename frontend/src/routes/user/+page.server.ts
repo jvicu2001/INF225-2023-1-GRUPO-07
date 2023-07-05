@@ -16,7 +16,6 @@ export const actions = {
         });
 
         const upload_response_json = await upload_response.json();
-        console.log(upload_response_json);
 
         if (upload_response.status === 200) {
             return {
