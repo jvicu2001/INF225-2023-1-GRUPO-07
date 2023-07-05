@@ -10,6 +10,9 @@
     </ul>
     <ul>
         <li>
+            <a href="/user">sesion</a>
+        </li>
+        <li>
             <a href="/map">Mapa</a>
         </li>
         <li>
