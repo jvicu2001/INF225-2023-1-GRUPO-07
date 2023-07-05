@@ -20,6 +20,8 @@ from fastapi.encoders import jsonable_encoder
 
 client = motor.motor_asyncio.AsyncIOMotorClient(f'{os.environ["MONGODB_URL"]}')
 
+SECRET_KEY = open("/run/secrets/oauth-secret", "r").read()
+
 router = APIRouter(
     prefix="/upload",
     tags=["upload"],
@@ -27,7 +29,11 @@ router = APIRouter(
 )
 
 @router.post("/")
-async def upload_file(file: UploadFile, token: str = Depends(OAuth2PasswordBearer(tokenUrl="auth/token"))):
+async def upload_file(file: UploadFile, dataType: int, token: str = Depends(OAuth2PasswordBearer(tokenUrl="auth/token"))):
+    # DEM:0, DTM:1, DSM:2
+    if dataType not in [0,1,2]:
+        return JSONResponse(content={'error': 'El tipo de archivo no es válido'}, status_code=status.HTTP_400_BAD_REQUEST)
+
     if file.content_type == 'image/tiff':
         # Creamos una carpeta con nombre único
         folder = str(uuid.uuid4())
@@ -68,7 +74,7 @@ async def upload_file(file: UploadFile, token: str = Depends(OAuth2PasswordBeare
         })
 
         # Obtenemos el nombre del usuario que subió el archivo mediante el token
-        decoded_token = jwt.decode(token, os.environ["SECRET_KEY"], algorithms=["HS256"])
+        decoded_token = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
         username = decoded_token.get("username")
 
         # Abrimos el archivo con rasterio
@@ -91,9 +97,12 @@ async def upload_file(file: UploadFile, token: str = Depends(OAuth2PasswordBeare
 
             metadata['fileData'] = filedata
 
+            metadata['fileDataType'] = dataType
+
             # Datos del usuario
             metadata['user'] = username
 
+            metadata['fileName'] = file.filename
             metadata['fileId'] = new_file.inserted_id.__str__()            
 
             # Convertimos los metadatos a JSON

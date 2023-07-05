@@ -1,5 +1,5 @@
 <script lang="ts">
-    export let user;
+    export let data;
 </script>
 
 <nav class="container-fluid">
@@ -9,21 +9,30 @@
         </li>
     </ul>
     <ul>
-        <li>
-            <a href="/user">sesion</a>
-        </li>
+        {#if data.user}
+            <li>
+                <a href="/user">Subir Datos</a>
+            </li>
+        {/if}
         <li>
             <a href="/map">Mapa</a>
         </li>
         <li>
-            {#if $user}
-                <a href="/logout">Logout</a>
-            {/if}
-            {#if !$user}
-                <a href="/login">Login</a>
+            {#if data.user}
+                <form action="logout" method="POST">
+                    <button type="submit" class="navbutton">Logout</button>
+                </form>
+            {:else}
+                <a role="button" href="/login">Login</a>
             {/if}
         </li>
     </ul>
 </nav>
 
 <slot></slot>
+
+<style>
+    form{
+        margin: 0% 0% 0% 0%;
+    }
+</style>

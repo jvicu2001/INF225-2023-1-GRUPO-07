@@ -72,6 +72,20 @@ class GeoTiffMetadataModel(BaseModel):
         }   # Ejemplo de un documento de la colección GeoTiffMetadata
             # Extraido de https://rasterio.readthedocs.io/en/stable/cli.html#info
 
+class FileMetadataModel(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    fileData: GeoTiffMetadataModel = Field(...)
+    user: str = Field(...)
+    fileName: str = Field(...)
+    fileDataType: int = Field(...)  # 0: DEM, 1: DTM, 2: DSM
+    fileId: PyObjectId = Field(...)     # Id del archivo en la colección Files del microservicio storage
+
+    class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {
+            ObjectId: str
+        }
+
 # User and auth models
 class Token(BaseModel):
     access_token: str
