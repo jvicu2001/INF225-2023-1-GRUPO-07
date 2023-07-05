@@ -22,7 +22,7 @@ export const actions = {
 
         if (login_response.status === 200) {
             const auth_response = await login_response.json();
-            cookies.set("token", auth_response["access_token"], {httpOnly: true, maxAge: 7200});  
+            cookies.set("token", auth_response["access_token"], {httpOnly: true, maxAge: 7200, path: "/"});  
             return {
                 success: true
             }
