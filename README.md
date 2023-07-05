@@ -28,3 +28,4 @@ Este es el repositorio del Grupo 7, cuyos integrantes son:
 ## Comentarios
 - La falta de documentación del framework de frontend que elegimos nos llevó a no poder listar los archivos subidos en la página. 
 - El backend está preparado para proveer de todos los datos necesarios para poder implementar las funcionalidades restantes.
+- La subida de archivos por delante arroja error, y en segundos intentos con el mismo archivo pareciese no pasar nada. Por detrás, el archivo se sube bien la primera vez y los siguientes intentos devuelve ``409 Conflict`` ya que los archivos ya están subidos.
