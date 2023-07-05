@@ -5,3 +5,5 @@ WORKDIR /opt/app
 COPY package*.json ./
 
 RUN [ "npm", "install" ]
+
+ENTRYPOINT [ "npm", "dev" ]
