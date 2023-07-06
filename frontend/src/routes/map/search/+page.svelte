@@ -19,13 +19,24 @@
     fileDataType: number;
     fileId: string;
 }
+    import {page} from '$app/stores';
     import 'leaflet/dist/leaflet.css';
     import { Map, TileLayer, Marker, Popup } from 'svelte-map-leaflet';
  
     const mapOptions = {center:[-35.79348852145885, -71.78329391202294], zoom:4}
     const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
-    export let metadata: Metadata[];
+    export let metadata: Metadata[] =$page.data.metadata;
+
+    /*onMount(async () => {
+        const query = $page.params.query;
+        const curr_page = ($page.params.page ? $page.params.page : "");
+        const limit = ($page.params.limit ? $page.params.limit : "");
+        let backend_response = await fetch(`http://metadata:8010/metadata?query=${query}&page=${curr_page}&limit=${limit}`);
+
+        metadata = await backend_response.json();
+    });*/
+
 </script>
  
  <div class="container">

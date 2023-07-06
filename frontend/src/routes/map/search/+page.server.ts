@@ -21,18 +21,21 @@ interface Metadata {
     fileId: string;
 }
 
-export async function load({params}) {
-    const query = params.query ? params.query : "";
+
+export async function load({url}) {
+    const query = url.searchParams.get("query") ? url.searchParams.get("query") : "";
+    const limit = url.searchParams.get("limit") ? url.searchParams.get("limit") : 50;
+    const page = url.searchParams.get("page") ? url.searchParams.get("page") : 1;
+
     const results = await fetch("http://metadata:8010/metadata/?" + new URLSearchParams({
         "query": query,
-        "limit": 50
+        "limit": limit,
+        "page": page
     }), {
         method: "GET",
     })
 
     const metadata: Metadata[] = await results.json();
     
-    return {
-        metadata
-    }
+    return {metadata};
 }
