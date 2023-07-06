@@ -26,7 +26,7 @@
 
     <div class="productive__texts">
 
-      <h3 class="productive__title"> Nuestros datos siempre están actualizados</h3
+      <h3 class="productive__title"> Nuestros datos siempre están actualizados</h3>
 
       <p class="productive__paragraph"> Los administradores actualizan los datos altimétricos cada vez que se obtienen nuevos archivos GeoTIFF.</p>
 
