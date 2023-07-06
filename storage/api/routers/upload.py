@@ -110,7 +110,8 @@ async def upload_file(file: UploadFile, dataType: int, token: str = Depends(OAut
 
             # Enviamos estos datos al microservicio de metadatos
             async with aiohttp.ClientSession() as session:
-                async with session.post('http://metadata:8010/metadata/', json=metadata, params={"token":token}) as response:
+                headers = jsonable_encoder({'accept': 'application/json', 'Authorization': f'Bearer {token}'})
+                async with session.post('http://metadata:8010/metadata/', json=metadata, headers=headers) as response:
                     if response.status != 201:
                         # Si el microservicio de metadatos retorna un error, eliminamos el archivo y retornamos el error
                         os.remove(file_path)
