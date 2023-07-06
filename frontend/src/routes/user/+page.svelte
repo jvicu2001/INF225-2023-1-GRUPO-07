@@ -11,7 +11,7 @@
         <h3></h3>
       </hgroup>
       <p>
-        Para actualizar o subir nuevos datos altimetricos de distintas partes de Chile seleccione el tipo de archivo que desea subir 
+        Para actualizar o subir nuevos datos altimétricos de distintas partes de Chile, seleccione el tipo de archivo que desea subir 
       </p>  
         <!-- Select -->
       <form method="POST" enctype="multipart/form-data">

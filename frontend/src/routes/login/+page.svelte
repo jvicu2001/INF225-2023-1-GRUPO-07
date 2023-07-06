@@ -9,7 +9,7 @@
     <div>
         <hgroup>
         <h1>Chile 3D</h1>
-        <h2> Ingresa a tu cuenta para gestionar los datos altimetricos</h2>
+        <h2> Ingresa a tu cuenta para gestionar los datos altimétricos</h2>
         </hgroup>
         <form action="login" method="POST">
             <input

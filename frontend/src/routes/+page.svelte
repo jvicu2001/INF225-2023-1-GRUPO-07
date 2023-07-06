@@ -9,8 +9,8 @@
   <section class="hero__main container">
       <img src={mapa}/>
 
-    <h1 class="hero__title">Aqui encontraras los dato altimetrico de Chile que necesites.</h1>
-    <p class="hero__paragraph"> Nuestra plataforma te permite buscar y descargar datos altimetricos en formato  GeoTIFF.</p>
+    <h1 class="hero__title">Aquí encontrarás los datos altimétricos de Chile que necesites.</h1>
+    <p class="hero__paragraph"> Nuestra plataforma te permite buscar y descargar datos altimétricos en formato GeoTIFF.</p>
       <a href="#" class="hero__cta">  
         
       </a>
@@ -26,12 +26,11 @@
 
     <div class="productive__texts">
 
-      <h3 class="productive__title"> Nuestros datos siempre estan actualizados</h3>
+      <h3 class="productive__title"> Nuestros datos siempre están actualizados</h3
 
-      <p class="productive__paragraph"> Los administradores actualizan los datos almimetricos cada vez que se obtienen nuevos archivos GeoTIFF.</p>
+      <p class="productive__paragraph"> Los administradores actualizan los datos altimétricos cada vez que se obtienen nuevos archivos GeoTIFF.</p>
 
-      <p class="productive__paragraph">Pero recuerda no todas las zonas de nuestro pais cuentan con datos altimetricos.</p>
-
+      <p class="productive__paragraph">Pero recuerda, no todas las zonas de nuestro país cuentan con datos altimétricos.</p>
 
     </div>
   </section>
