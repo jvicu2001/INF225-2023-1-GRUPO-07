@@ -33,8 +33,6 @@ class GeoTiffMetadataModel(BaseModel):
     res: List[float] = Field(...)   # Área de cada pixel (resolución)
     nodata: float = Field(...)
     tags: dict = Field(...)     # Tags
-
-    fileId: PyObjectId = Field(...)     # Id del archivo en la colección Files del microservicio storage
     
     class Config:
         arbitrary_types_allowed = True

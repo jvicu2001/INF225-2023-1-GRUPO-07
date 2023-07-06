@@ -18,6 +18,8 @@ from hashlib import md5
 
 from fastapi.encoders import jsonable_encoder
 
+from models import FileMetadataModel, GeoTiffMetadataModel
+
 client = motor.motor_asyncio.AsyncIOMotorClient(f'{os.environ["MONGODB_URL"]}')
 
 SECRET_KEY = open("/run/secrets/oauth-secret", "r").read()
@@ -77,33 +79,41 @@ async def upload_file(file: UploadFile, dataType: int, token: str = Depends(OAut
         decoded_token = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
         username = decoded_token.get("username")
 
+        if username is None or file.filename is None:
+            # Si el token no contiene un nombre de usuario, o el archivo no tiene nombre, eliminamos el archivo y retornamos un error
+            os.remove(file_path)
+            os.rmdir(f'/data/files/{folder}')
+
+            # Borrar entrada de la base de datos
+            await db["Files"].delete_one({"_id": new_file.inserted_id})
+
+            return JSONResponse(content={'error': 'El token no es válido'}, status_code=status.HTTP_401_UNAUTHORIZED)
+
         # Abrimos el archivo con rasterio
         with rasterio.open(file_path) as dataset:
             # Obtenemos los metadatos
-            metadata = {}
-            filedata = {}
-            filedata['count'] = dataset.count
-            filedata['crs'] = dataset.crs.to_string()
-            filedata['dtype'] = dataset.dtypes[0]
-            filedata['driver'] = dataset.driver
-            filedata['bounds'] = list(dataset.bounds)
-            filedata['lnglat'] = list(dataset.lnglat())
-            filedata['height'] = dataset.height
-            filedata['width'] = dataset.width
-            filedata['shape'] = dataset.shape
-            filedata['res'] = dataset.res
-            filedata['nodata'] = (dataset.nodata if dataset.nodata is not None else 0.0)
-            filedata['tags'] = dataset.tags()
+            filedata: GeoTiffMetadataModel = GeoTiffMetadataModel(
+                count=dataset.count,
+                crs=dataset.crs.to_string(),
+                dtype=dataset.dtypes[0],
+                driver=dataset.driver,
+                bounds=list(dataset.bounds),
+                lnglat=list(dataset.lnglat()),
+                height=dataset.height,
+                width=dataset.width,
+                shape=list(dataset.shape),
+                res=list(dataset.res),
+                nodata=(dataset.nodata if dataset.nodata is not None else 0.0),
+                tags=dataset.tags(),
+            )
 
-            metadata['fileData'] = filedata
-
-            metadata['fileDataType'] = dataType
-
-            # Datos del usuario
-            metadata['user'] = username
-
-            metadata['fileName'] = file.filename
-            metadata['fileId'] = new_file.inserted_id.__str__()            
+            metadata: FileMetadataModel = FileMetadataModel(
+                fileData=filedata,
+                user=username,
+                fileName=file.filename,
+                fileDataType=dataType,
+                fileId=new_file.inserted_id.__str__()
+            )          
 
             # Convertimos los metadatos a JSON
             metadata = jsonable_encoder(metadata)
@@ -111,11 +121,16 @@ async def upload_file(file: UploadFile, dataType: int, token: str = Depends(OAut
             # Enviamos estos datos al microservicio de metadatos
             async with aiohttp.ClientSession() as session:
                 headers = jsonable_encoder({'accept': 'application/json', 'Authorization': f'Bearer {token}'})
+
                 async with session.post('http://metadata:8010/metadata/', json=metadata, headers=headers) as response:
                     if response.status != 201:
                         # Si el microservicio de metadatos retorna un error, eliminamos el archivo y retornamos el error
                         os.remove(file_path)
                         os.rmdir(f'/data/files/{folder}')
+
+                        # Borrar entrada de la base de datos
+                        await db["Files"].delete_one({"_id": new_file.inserted_id})
+
                         return JSONResponse(content=await response.json(), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
                     return JSONResponse(content=await response.json(), status_code=status.HTTP_201_CREATED)
 
